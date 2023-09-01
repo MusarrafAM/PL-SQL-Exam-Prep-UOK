@@ -1,0 +1,175 @@
+/*
+PL/SQL Cursors - Tutorial Answers
+By Dr Muditha Tissera       
+*/
+
+/***Q1***/
+DECLARE
+ 	v_fName employees.first_name%TYPE;
+  total_rows   NUMBER;
+BEGIN 
+
+    SELECT first_name INTO v_fName 
+    FROM employees
+    WHERE employee_id =200;
+    
+    DBMS_OUTPUT.PUT_LINE(v_fName);
+    --ISOPEN attribute
+    IF SQL%ISOPEN THEN
+      DBMS_OUTPUT.PUT_LINE('Implisit cursor is open.');
+  	ELSE
+      DBMS_OUTPUT.PUT_LINE('Implicit cursor is closed');
+    END IF;
+    
+    --FOUND attribute
+    IF SQL%FOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Rows returned from SELECT statement.');
+    ELSIF SQL%FOUND IS NULL THEN
+      DBMS_OUTPUT.PUT_LINE('No any SQL/DML statement executed.');      
+  	ELSE
+      DBMS_OUTPUT.PUT_LINE('No rows returned.');
+    END IF;   
+    
+    --NOTFOUND attribute
+    IF SQL%NOTFOUND THEN
+      DBMS_OUTPUT.PUT_LINE('No rows returned.');
+    ELSIF SQL%NOTFOUND IS NULL THEN
+      DBMS_OUTPUT.PUT_LINE('No any SQL/DML statement executed.');      
+  	ELSE
+      DBMS_OUTPUT.PUT_LINE('Rows returned from SELECT statement.');
+    END IF; 
+END;
+
+/***Q2***/
+CREATE TABLE  student(
+              Std_no VARCHAR2(5) PRIMARY KEY,
+              Std_Name VARCHAR2(20),
+              Address VARCHAR2(50)); 
+--a)
+DECLARE
+  row_cnt NUMBER := 0;
+BEGIN
+  INSERT INTO student VALUES ('CT101', 'Kasun', 'Colombo');
+  row_cnt := row_cnt + SQL%ROWCOUNT;
+  
+  INSERT INTO student VALUES ('CT102', 'Ramesh', 'Gampaha'); 
+  row_cnt := row_cnt + SQL%ROWCOUNT;
+  
+  INSERT INTO student VALUES ('CT103', 'Krishna', 'Colombo');
+  row_cnt := row_cnt + SQL%ROWCOUNT;
+  
+  INSERT INTO student VALUES ('CT104', 'Dinusha', 'Galle');
+  row_cnt := row_cnt + SQL%ROWCOUNT;
+  
+  INSERT INTO student VALUES ('CT105', 'Nimesha', 'Matara');
+  row_cnt := row_cnt + SQL%ROWCOUNT;
+  
+  DBMS_OUTPUT.PUT_LINE('Row Count:'||row_cnt);
+
+END;
+
+--b)
+BEGIN
+  UPDATE student SET std_name = 'Ayesh' WHERE std_no = 'CT102';
+  DBMS_OUTPUT.PUT_LINE('Row Count:'||SQL%ROWCOUNT);
+
+END;
+
+--c)
+BEGIN
+  DELETE FROM student WHERE address = 'Colombo';
+  DBMS_OUTPUT.PUT_LINE('Row Count:'||SQL%ROWCOUNT);
+
+END;
+
+/***Q3***/
+DECLARE
+  emp_id employees.employee_id%TYPE;
+  l_name employees.last_name%TYPE;
+  
+  CURSOR cur_1(p_deptID employees.department_id%TYPE) IS 
+                SELECT employee_id, last_name FROM employees 
+                WHERE department_id = p_deptID;
+BEGIN
+
+  OPEN cur_1(&p_deptID);
+  LOOP
+    FETCH cur_1 INTO emp_id, l_name;
+    EXIT WHEN cur_1%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(emp_id||' '|| l_name);
+  END LOOP;
+  CLOSE cur_1;
+
+END;
+
+---Using CURSOR FOr loop.
+DECLARE
+  CURSOR cur_1(p_deptID employees.department_id%TYPE) IS 
+                SELECT employee_id, last_name FROM employees 
+                WHERE department_id = p_deptID;
+BEGIN
+
+  FOR cur_rec IN cur_1(&p_deptID) LOOP
+    DBMS_OUTPUT.PUT_LINE(cur_rec.employee_id||' '|| cur_rec.last_name);
+  END LOOP;
+
+END;
+
+/***Q4***/
+DECLARE
+  CURSOR cur_countries IS 
+                SELECT * FROM countries 
+                WHERE country_name LIKE 'I%'
+                AND region_id = 1;
+BEGIN
+
+  FOR cur_rec IN cur_countries LOOP
+    DBMS_OUTPUT.PUT_LINE(cur_rec.country_id||' '||cur_rec.country_name||' '|| cur_rec.region_id);
+  END LOOP;
+
+END;
+
+--Using record_type variable rec_country
+DECLARE
+  CURSOR cur_countries IS 
+                SELECT * FROM countries 
+                WHERE country_name LIKE 'I%'
+                AND region_id = 1;
+  rec_country countries%ROWTYPE;       
+BEGIN
+
+  OPEN cur_countries;
+  LOOP
+    FETCH cur_countries INTO rec_country;
+    EXIT WHEN cur_countries%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE(rec_country.country_id||' '||rec_country.country_name||' '|| rec_country.region_id);
+  END LOOP;
+  CLOSE cur_countries;
+
+END;
+
+/***Q5***/
+DECLARE
+  CURSOR c_avg_sal IS
+  SELECT AVG(salary) FROM employees WHERE department_id = 60;
+  
+  CURSOR c_emp(p_avg_sal NUMBER) IS
+  SELECT employee_id, salary FROM employees WHERE salary > p_avg_sal;
+  
+  v_avg_sal NUMBER;
+BEGIN
+
+  OPEN c_avg_sal;
+  LOOP
+    FETCH c_avg_sal INTO v_avg_sal;
+    EXIT WHEN c_avg_sal%NOTFOUND;
+  END LOOP;
+  CLOSE c_avg_sal;
+
+  DBMS_OUTPUT.PUT_LINE('Average salary : '||v_avg_sal);
+  
+  FOR rec_emp IN c_emp(v_avg_sal) LOOP
+    DBMS_OUTPUT.PUT_LINE(rec_emp.employee_id||' : '||rec_emp.salary);
+  END LOOP;
+  
+END;

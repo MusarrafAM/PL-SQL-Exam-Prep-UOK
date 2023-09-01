@@ -1,0 +1,118 @@
+--Q1----------------------------------------------------------------------------
+DECLARE
+    vNumber NUMBER;
+BEGIN 
+    vNumber := 1589.0374;
+    DBMS_OUTPUT.PUT_LINE('1{a} '||ROUND(vNumber,2));
+    DBMS_OUTPUT.PUT_LINE('1{b} '||ROUND(vNumber));    
+    DBMS_OUTPUT.PUT_LINE('1{b} '||TRUNC(vNumber));    
+    DBMS_OUTPUT.PUT_LINE('1{b} '||FLOOR(vNumber));    
+    DBMS_OUTPUT.PUT_LINE('1{c} '||TRUNC(vNumber,-2));    
+END;
+
+--Q2----------------------------------------------------------------------------
+DECLARE
+    vNumber INT := 109;
+    vMod NUMBER;
+BEGIN
+    vMod := MOD(vNumber,5);
+    DBMS_OUTPUT.PUT_LINE(vMod);
+END;
+
+--Q3----------------------------------------------------------------------------
+DECLARE
+    vChar1 VARCHAR2(10);
+    vChar2 VARCHAR2(10);
+BEGIN
+    vChar1 := 'Hello';
+    vChar2 := 'World!';
+    DBMS_OUTPUT.PUT_LINE(vChar1||' '||vChar2);
+    DBMS_OUTPUT.PUT_LINE(CONCAT(CONCAT(vChar1,' '), vChar2));
+    DBMS_OUTPUT.PUT_LINE('It''s now or never');
+    DBMS_OUTPUT.PUT_LINE(q'[It's now or never]');
+END;
+
+--Q4----------------------------------------------------------------------------
+DECLARE
+    vChar1 VARCHAR2(10);
+    vChar2 VARCHAR2(10);
+BEGIN
+    vChar1 := 'hARRY';
+    vChar2 := 'pOTTER';
+    DBMS_OUTPUT.PUT_LINE(vChar1||' '||vChar2);
+    DBMS_OUTPUT.PUT_LINE(CONCAT(CONCAT(vChar1,' '), vChar2));
+    DBMS_OUTPUT.PUT_LINE(UPPER(vChar1||' '||vChar2));
+    --DBMS_OUTPUT.PUT_LINE(UPPER(vChar1)||' '||UPPER(vChar2)));
+    DBMS_OUTPUT.PUT_LINE(LOWER(CONCAT(CONCAT(vChar1,' '), vChar2)));
+    DBMS_OUTPUT.PUT_LINE(INITCAP(vChar1||' '||vChar2));
+    DBMS_OUTPUT.PUT_LINE(INITCAP('harry#potter'));
+END;
+
+--Q5----------------------------------------------------------------------------
+BEGIN
+
+    DBMS_OUTPUT.PUT_LINE('a. '||SUBSTR('Advanced Database Systems',1,1)); 
+    DBMS_OUTPUT.PUT_LINE('b. '||SUBSTR('Advanced Database Systems',-1,1)); 
+    DBMS_OUTPUT.PUT_LINE('c. '||SUBSTR('Advanced Database Systems',2,9));
+    DBMS_OUTPUT.PUT_LINE('d. '||SUBSTR('Advanced Database Systems',10)); 
+    DBMS_OUTPUT.PUT_LINE('e. '||INSTR('Advanced Database Systems','e')); 
+    DBMS_OUTPUT.PUT_LINE('f. '||INSTR('Advanced Database Systems','e',10)); 
+    DBMS_OUTPUT.PUT_LINE('g. '||INSTR('Advanced Database Systems','e',-2));  --find the position of e starting from 2nd reverse charactor
+    DBMS_OUTPUT.PUT_LINE('h. '||INSTR('Advanced Database Systems','a',2,3));  --find a starting from 2nd position and look for 3rd a.
+    DBMS_OUTPUT.PUT_LINE('i. '||LPAD('Database',12,'.')); 
+    DBMS_OUTPUT.PUT_LINE('j. '||RPAD('Database', 15, '._.')); 
+    DBMS_OUTPUT.PUT_LINE('k. '||REPLACE('Teeth','e','o')); 
+
+END;
+
+--Q6----------------------------------------------------------------------------
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('a. '||TO_CHAR(SYSDATE)); 
+    DBMS_OUTPUT.PUT_LINE('b. '||TO_CHAR(SYSDATE+15, 'Day, DDth Month YYYY')); 
+    DBMS_OUTPUT.PUT_LINE('c. '||TO_CHAR(SYSDATE+15, 'FMDay, DDth Month YYYY')); -- FM: Format element modifier to control blank and zero padding.
+    DBMS_OUTPUT.PUT_LINE('d. '||TO_CHAR(SYSDATE, 'Q')); -- Quater of the year
+    DBMS_OUTPUT.PUT_LINE('e. '||TO_CHAR(SYSDATE, 'DDD')); 
+    DBMS_OUTPUT.PUT_LINE('f. '||TO_CHAR(SYSDATE, 'YYYY-MM-DD HH:MI:SS')); 
+    DBMS_OUTPUT.PUT_LINE('g. '||TO_CHAR(SYSDATE, 'YYYY MON DD HH24:MI:SS')); 
+END;
+
+--Q7----------------------------------------------------------------------------
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(TO_DATE('10-OCT-19'));  
+    DBMS_OUTPUT.PUT_LINE(TO_DATE ('October 20 2019', 'Month DD YYYY')); 
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(TO_DATE ('October 20 2019', 'Month DD YYYY'),'Month DD YYYY')); 
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(TRUNC (SYSDATE), 'DD-MM-YYYY HH24:MI:SS')); 
+    DBMS_OUTPUT.PUT_LINE(TRUNC (SYSDATE, 'MM') ); --Truncate to the begining of the month
+    DBMS_OUTPUT.PUT_LINE(TRUNC (SYSDATE, 'Q')); --Truncate to the begining of the quater of the year
+    DBMS_OUTPUT.PUT_LINE(TRUNC (SYSDATE, 'Y')); 
+	--The number you give as + or - after sysdate should be in days.
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(SYSDATE + 1, 'DD-MM-YYYY HH24:MI:SS'));
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(SYSDATE - 1/24,'DD-MM-YYYY HH24:MI:SS')); --1/24 means one hour
+    DBMS_OUTPUT.PUT_LINE(TO_CHAR(SYSDATE + 10 / ( 60 * 24), 'DD-MM-YYYY HH24:MI:SS')); --This adds 10 minutes to current time. 1/(60*24) = 1 minute  
+    DBMS_OUTPUT.PUT_LINE(TO_DATE('01-JAN-2023')-TO_DATE('05-JAN-2023')); 
+    DBMS_OUTPUT.PUT_LINE(ADD_MONTHS (SYSDATE, 1)); 
+    DBMS_OUTPUT.PUT_LINE(ADD_MONTHS (SYSDATE, -3)); 
+    DBMS_OUTPUT.PUT_LINE(ADD_MONTHS (TO_DATE ('31-jan-2011', 'DD-MON-YYYY'), 1));
+    DBMS_OUTPUT.PUT_LINE(NEXT_DAY (SYSDATE, 'SATURDAY') );
+END;
+
+--Q8----------------------------------------------------------------------------
+DECLARE
+    SUBTYPE dob IS DATE; --based on DATE type
+    birthday dob;
+BEGIN
+    birthday := TO_DATE('2020-02-19','yyyy-mm-dd');
+    DBMS_OUTPUT.PUT_LINE('Birthday is '||birthday );
+END;
+
+--Q9----------------------------------------------------------------------------
+DECLARE
+    vDeptName departments.department_name%TYPE;
+    vLocation departments.location_id%TYPE;
+BEGIN
+    SELECT department_name, location_id 
+    INTO vDeptName, vLocation
+    FROM Departments
+    WHERE department_id = 200;
+    DBMS_OUTPUT.PUT_LINE('Location ID of '||vDeptName||' department is '|| vLocation);
+END;

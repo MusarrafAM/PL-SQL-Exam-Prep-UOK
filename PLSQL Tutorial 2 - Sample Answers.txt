@@ -1,0 +1,175 @@
+/*
+Control Statements Tutorial Answers
+By Dr Muditha Tissera       
+*/
+
+/***Q1***/
+/*  &job lets user to input a value and get it to the job variable 
+Try and see what is the outcome when you enter MGR and 'MGR' both.  */
+DECLARE
+  v_title VARCHAR2(10);
+  v_job   VARCHAR2(5) := &job;
+BEGIN
+    IF v_job = 'MGR' THEN
+      v_title := 'Manager';
+    ELSIF v_job = 'ACC' THEN
+        v_title := 'Accountant';
+    ELSIF v_job = 'PRES' THEN
+        v_title := 'President';
+    END IF;
+    DBMS_OUTPUT.PUT_LINE(v_title);
+END;
+
+/***Q2***/
+/*Find the available employee ids in the employees table of oracleHR schema.
+Use such employee ids as input and excute the program*/
+DECLARE
+  n_increment NUMBER :=0;
+  v_salary NUMBER;
+  v_empID NUMBER := &empID;
+BEGIN
+    SELECT salary INTO v_salary FROM employees
+    WHERE employee_id = v_empID;
+    
+    IF v_salary > 20000 THEN
+      n_increment := 5000;
+    ELSIF v_salary > 15000 THEN
+      n_increment := 3000;
+    ELSIF v_salary > 10000 THEN
+      n_increment := 1000;
+    ELSE
+      n_increment := 0;
+    END IF;
+    DBMS_OUTPUT.PUT_LINE('Employee ID '||v_empID||' has '||n_increment||' increment.');
+END;
+
+/***Q3***/
+DECLARE
+  n_avgSal NUMBER;
+  n_salary NUMBER;
+  n_empID NUMBER := &empID;
+BEGIN
+  SELECT salary INTO n_salary
+  FROM employees
+  WHERE employee_id = n_empID;
+  
+  SELECT AVG(salary) INTO n_avgSal
+  FROM employees;
+  
+  DBMS_OUTPUT.PUT_LINE('Average salary = '||ROUND(n_avgSal));
+  DBMS_OUTPUT.PUT_LINE('Employee salary= '||n_salary);
+  IF n_salary > n_avgSal THEN
+    DBMS_OUTPUT.PUT_LINE('Salary greater than average salary ');
+  ELSIF n_salary < n_avgSal THEN
+    DBMS_OUTPUT.PUT_LINE('Salary less than average salary ');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('Salary equal to average salary ');
+  END IF;
+END;
+  
+/***Q4***/
+SELECT first_name, 
+  CASE job_id 
+    WHEN 'SA_REP' THEN salary*2
+    WHEN 'AC_ACCOUNT' THEN salary*5
+    WHEN 'IT_PROG' THEN salary*10
+    ELSE salary*3
+  END AS Bonus
+FROM employees;
+
+/***Q5***/
+SELECT employee_id, salary, 
+  CASE  
+    WHEN salary > 20000 THEN 5000
+    WHEN salary > 15000 THEN 3000
+    WHEN salary > 10000 THEN 2000
+    WHEN salary > 5000 THEN 1000
+    ELSE 0
+  END AS "Salary Increment"
+FROM employees;
+
+/***Q6***/
+--Using Basic LOOP--
+--Exit method 1
+DECLARE
+  v_num NUMBER := 100;
+BEGIN
+  LOOP
+    DBMS_OUTPUT.PUT_LINE(v_num);
+    IF v_num = 0 THEN
+      EXIT;
+    END IF;
+    v_num := v_num -10;
+   END LOOP;
+END;
+--Exit method 2
+DECLARE
+  v_num NUMBER := 100;
+BEGIN
+  LOOP
+    DBMS_OUTPUT.PUT_LINE(v_num);
+    EXIT WHEN v_num = 0;
+    v_num := v_num -10;
+   END LOOP;
+END;
+--Using WHILE LOOP 
+DECLARE
+  v_num NUMBER := 100;
+BEGIN
+  WHILE v_num >= 0 LOOP
+    DBMS_OUTPUT.PUT_LINE(v_num);
+    v_num := v_num -10;
+   END LOOP;
+END;
+--Using FOR LOOP 
+--------WRONG METHOD. Find the reason.----------------
+DECLARE
+  v_num NUMBER;
+BEGIN
+  FOR v_num IN 0..100 LOOP
+    DBMS_OUTPUT.PUT_LINE(v_num);
+    v_num := v_num +10;
+  END LOOP;
+END;
+-- Correct method
+DECLARE
+  v_num NUMBER;
+BEGIN
+  FOR v_num IN REVERSE 0..100 LOOP
+    --DBMS_OUTPUT.PUT_LINE(v_num);
+    IF MOD(v_num,10) = 0 THEN
+          DBMS_OUTPUT.PUT_LINE(v_num);
+    END IF;
+  END LOOP;
+END;
+
+/***Q7***Use of continue and continue when/
+--Method 1
+DECLARE
+  v_num NUMBER ;
+BEGIN
+  FOR v_num IN REVERSE 0..100 LOOP
+    --DBMS_OUTPUT.PUT_LINE(v_num);
+    IF MOD(v_num,10) = 0 THEN
+          CONTINUE WHEN v_num = 50;
+          DBMS_OUTPUT.PUT_LINE(v_num);
+    END IF;
+  END LOOP;
+END;
+
+--Method 2
+DECLARE
+  v_num NUMBER ;
+BEGIN
+  FOR v_num IN REVERSE 0..100 LOOP
+    --DBMS_OUTPUT.PUT_LINE(v_num);
+    IF MOD(v_num,10) = 0 THEN
+          IF v_num = 50 THEN
+            CONTINUE;
+          END IF;
+          DBMS_OUTPUT.PUT_LINE(v_num);
+    END IF;
+  END LOOP;
+END;
+
+/****End***************/

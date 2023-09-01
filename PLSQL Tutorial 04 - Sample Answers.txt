@@ -1,0 +1,133 @@
+/*Question 1*/
+DECLARE
+    --a)
+    TYPE aatype_tab IS TABLE OF NUMBER INDEX BY PLS_INTEGER; --Use an associative array to store numbers.
+    v_tab aatype_tab;
+    i     PLS_INTEGER;
+BEGIN
+    --b),c)
+    DBMS_OUTPUT.PUT_LINE('First 10 square Numbers');
+    FOR i IN 1..10 LOOP
+        v_tab(i) := i*i;
+        DBMS_OUTPUT.PUT_LINE(v_tab(i));
+    END LOOP;
+    savepoint S1;
+    --d)
+    v_tab.DELETE(5,7); --arguments of the DELETE should be from and to numbers.
+    --e)
+    i := v_tab.first;
+    DBMS_OUTPUT.PUT_LINE(chr(10)||'Square numbers after removing 25, 36 and 49');
+    LOOP
+        EXIT WHEN i IS NULL;
+        DBMS_OUTPUT.PUT_LINE(v_tab(i));
+        i:= v_tab.NEXT(i);
+    END LOOP;
+    
+    --f)
+    v_tab(6):= 36;
+    --g)
+    i:=v_tab.FIRST();
+    DBMS_OUTPUT.PUT_LINE(chr(10)||'Square numbers after adding 36 again');
+     LOOP
+        EXIT WHEN i IS NULL;
+        DBMS_OUTPUT.PUT_LINE(v_tab(i));
+        i:= v_tab.NEXT(i);
+    END LOOP;
+END;
+/
+
+/*Question 2*/
+DECLARE
+    CURSOR cur_employee IS
+        SELECT employee_id, first_name, last_name
+        FROM employees
+        WHERE ROWNUM < 6
+        ORDER BY Employee_id;
+        
+    TYPE typ_emp_name IS TABLE OF employees.first_name%TYPE
+    INDEX BY BINARY_INTEGER;
+    
+    v_emp_fullname typ_emp_name;
+    i employees.employee_id%TYPE;
+BEGIN
+    FOR emp IN cur_employee LOOP 
+      IF MOD(emp.employee_id,2) = 0 THEN
+          v_emp_fullname(emp.employee_id) := emp.first_name||' '||emp.last_name;
+      ELSE
+          v_emp_fullname(emp.employee_id*-1) := emp.first_name||' '||emp.last_name;
+      END IF;
+    END LOOP;
+    --a)
+    i:= v_emp_fullname.first();
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(i||' '||v_emp_fullname(i));
+        i:= v_emp_fullname.NEXT(i);
+        EXIT WHEN i IS NULL;
+    END LOOP;
+    --b)
+    v_emp_fullname.DELETE(100);
+    --c)
+    DBMS_OUTPUT.PUT_LINE(v_emp_fullname.count);
+    i :=  v_emp_fullname.FIRST;
+    LOOP
+        DBMS_OUTPUT.PUT_LINE(i||' '||v_emp_fullname(i));
+        i:=v_emp_fullname.NEXT(i);
+        EXIT WHEN i IS NULL;
+    END LOOP;
+END;
+/
+
+--select count(*) from departments;
+
+/*Question 3*/
+DECLARE
+  --a)
+  TYPE type_varr_dept_name
+  IS VARRAY(28) OF departments.department_name%TYPE;
+  
+  CURSOR cur_dept IS SELECT department_name FROM departments;
+  v_dept_tab type_varr_dept_name;
+  ind PLS_INTEGER;
+BEGIN
+  --b)
+  v_dept_tab := type_varr_dept_name();
+  v_dept_tab.EXTEND;
+  ind:=v_dept_tab.FIRST;
+  
+  FOR i IN cur_dept LOOP
+    v_dept_tab(ind):= i.department_name;
+    v_dept_tab.EXTEND;
+    ind:= v_dept_tab.NEXT(ind);
+  END LOOP;
+  
+  --c)
+  ind:=v_dept_tab.FIRST;
+  WHILE (ind < v_dept_tab.COUNT) LOOP -- index is not NULL
+    DBMS_OUTPUT.PUT_LINE(ind||chr(9)||v_dept_tab(ind));
+    ind:= v_dept_tab.NEXT(ind);
+  END LOOP;
+  
+END;
+/
+
+/*Question 4*/
+DECLARE
+  type typ_emp IS RECORD (
+                    emp_id employees.employee_id%TYPE,
+                    fname employees.first_name%TYPE,
+                    salary  employees.salary%TYPE);
+  CURSOR cur_emp IS
+                    SELECT employee_id, first_name, salary
+                    FROM employees;
+  rec_emp typ_emp;
+BEGIN
+  FOR i IN cur_emp LOOP
+    rec_emp.emp_id := i.employee_id;
+    rec_emp.fname := i.first_name;
+    rec_emp.salary := i.salary;
+    DBMS_OUTPUT.PUT_LINE(rec_emp.emp_id ||chr(9)||rec_emp.fname||chr(9)||rec_emp.salary );
+  END LOOP;
+END;
+/                
+    
+  
