@@ -1,0 +1,13 @@
+DECLARE
+ 	uname varchar2(30);
+BEGIN
+ 	uname := '&Uni';   -- HAVE To PUT THIS &Uni into a qutation to change it as a string.
+	if uname = 'UOK' then
+		dbms_output.put_line('University of Kelaniya');
+  	elsif uname = 'UOM' then
+		dbms_output.put_line('University of Moratuwa');
+ 	else
+		dbms_output.put_line('Enter UOK OR UOM');
+  	end if;
+END;
+/

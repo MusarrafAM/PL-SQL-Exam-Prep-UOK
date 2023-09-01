@@ -1,0 +1,8 @@
+DECLARE
+	uni_code varchar2(40) := 'UOK';
+BEGIN
+	if uni_code = 'UOK' then
+		DBMS_OUTPUT.PUT_LINE('University of Kelaniya');
+	end if;
+END;
+/

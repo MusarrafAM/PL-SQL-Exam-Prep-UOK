@@ -1,0 +1,6 @@
+DECLARE
+	name VARCHAR2(10):='Musarraf';
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('Your Name is ' || name);
+END;
+/

@@ -1,0 +1,15 @@
+DECLARE
+	--n1 number := 1589.0374;
+BEGIN 
+	--dbms_output.put_line(mod(109, 5));
+	--dbms_output.put_line(SUBSTR('Advanced Database Systems',1,1)); --A
+	--dbms_output.put_line(SUBSTR('Advanced Database Systems',-1,1)); --s
+	--dbms_output.put_line(SUBSTR('Advanced Database Systems',2,9)); --dvanced D   -- Important
+	--dbms_output.put_line(SUBSTR('Advanced Database Systems',10)); -- Database Systems
+	--dbms_output.put_line(INSTR('Advanced Database Systems','e'));  -- 7
+	--dbms_output.put_line(INSTR('Advanced Database Systems','e', 10)); -- 17 
+	-- SPACE SEAKKAAATHU
+	--dbms_output.put_line(INSTR('Advanced Database Systems','e', -2));  --23
+	--dbms_output.put_line(INSTR('Advanced Database Systems','e', 2, 3));   --23
+	dbms_output.put_line(LPAD('Database',12,'.'));  -- ....Database
+END;

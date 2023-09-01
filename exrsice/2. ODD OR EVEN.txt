@@ -1,0 +1,11 @@
+DECLARE
+	n1 number;
+BEGIN
+	n1 := &n1 ;
+	if mod(n1,2) = 0 then
+		DBMS_OUTPUT.PUT_LINE('EVEN');
+	else
+		DBMS_OUTPUT.PUT_LINE('ODD');
+	end if;
+END;
+/

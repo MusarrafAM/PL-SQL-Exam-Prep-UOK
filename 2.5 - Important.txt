@@ -1,0 +1,11 @@
+DECLARE
+	v_salary NUMBER;
+	v_name VARCHAR2(25);
+BEGIN
+	SELECT last_name,salary
+	INTO v_name,v_salary
+	FROM employees
+	WHERE employee_id=105;
+	--DBMS_OUTPUT.PUT_LINE('Employee '||v_name||'has a salary of '||v_salary);
+	DBMS_OUTPUT.PUT_LINE('Employee '|| v_name || 'has a salary of' ||v_salary );
+END;

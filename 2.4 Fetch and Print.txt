@@ -1,0 +1,7 @@
+DECLARE
+	e_name varchar2(100);
+BEGIN
+	select FIRST_NAME into e_name from employees where EMPLOYEE_ID = 200;
+	DBMS_OUTPUT.PUT_LINE(e_name);	
+END;
+/

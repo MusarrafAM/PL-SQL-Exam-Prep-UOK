@@ -1,0 +1,13 @@
+DECLARE
+	amount number := 10;
+BEGIN
+	CASE
+		when amount  > 100 then
+			dbms_output.put_line('HIGH');
+		when amount  > 50 then
+			dbms_output.put_line('Medium');
+		ELSE
+			dbms_output.put_line('LOW');
+	end case;
+END;
+/

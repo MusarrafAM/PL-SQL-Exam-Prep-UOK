@@ -1,0 +1,5 @@
+--set serveroutput on    -> This helps to  show the output.
+BEGIN
+	-- Put single quatation for string if give doubles qutatios its a variable.
+	DBMS_OUTPUT.PUT_LINE('Hello World');
+END;

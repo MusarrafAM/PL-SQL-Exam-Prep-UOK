@@ -1,0 +1,7 @@
+DECLARE
+	n1 number := 15;
+	n2 number := 4;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE(MOD(n1, n2));
+END;
+/

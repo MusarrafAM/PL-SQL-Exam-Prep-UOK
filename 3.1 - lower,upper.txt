@@ -1,0 +1,7 @@
+DECLARE
+	fname varchar2(100) := 'Muhammed';
+	lname varchar2(100) := 'Musarraf';
+BEGIN
+	DBMS_OUTPUT.PUT_LINE(INITCAP(fname) || LOWER(lname)  );
+END;
+/

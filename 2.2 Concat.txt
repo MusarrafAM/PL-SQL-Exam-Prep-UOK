@@ -1,0 +1,9 @@
+DECLARE
+	--Constant
+	v_string1 VARCHAR2(10):='hello ';
+	--Variable
+	v_string2 VARCHAR2(10);
+BEGIN
+	v_string2:= 'world!';
+	DBMS_OUTPUT.PUT_LINE(v_string1|| v_string2);
+END;

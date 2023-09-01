@@ -1,0 +1,8 @@
+DECLARE
+	vname varchar2(100);
+	vsalary number;
+BEGIN
+	select first_name, salary into vname, vsalary  from employees where employee_id = 200;
+	DBMS_OUTPUT.PUT_LINE(vname || ' getting a salary of '|| vsalary);
+END;
+/

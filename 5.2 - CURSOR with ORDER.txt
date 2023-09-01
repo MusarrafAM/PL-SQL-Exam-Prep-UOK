@@ -1,0 +1,9 @@
+DECLARE
+	CURSOR cur1 IS
+	select * from employees order by salary;
+BEGIN
+	FOR i IN cur1 LOOP
+		DBMS_OUTPUT.PUT_LINE('ID IS : '||i.employee_id|| ' Name is : '|| i.first_name||' '|| i.last_name|| ' Salary: '|| i.salary||'Job name: '||i.job_id);
+		END LOOP;
+END;
+/

@@ -1,0 +1,9 @@
+BEGIN
+	FOR i in 0 .. 10 loop
+		dbms_output.put_line(i);
+		if i = 6 then
+			exit;
+		end if;
+	end loop;
+END;
+/

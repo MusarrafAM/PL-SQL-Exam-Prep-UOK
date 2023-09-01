@@ -1,0 +1,16 @@
+DECLARE
+	emp_id employees.employee_id%TYPE;
+	f_name employees.first_name%TYPE;
+	CURSOR cur_1 IS
+	SELECT employee_id , first_name FROM employees
+	ORDER BY employee_id;
+BEGIN
+	OPEN cur_1;
+	LOOP
+		FETCH cur_1 INTO emp_id , f_name;
+		EXIT WHEN cur_1%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE(emp_id ||' '||f_name);
+	END LOOP;
+CLOSE cur_1;
+END;
+/

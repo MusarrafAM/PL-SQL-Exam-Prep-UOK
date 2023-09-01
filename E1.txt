@@ -1,0 +1,13 @@
+DECLARE
+	n number := 1;
+BEGIN
+	loop 
+		n := n + 1;
+		IF n = 11 then
+			exit;
+		elsif mod(n, 2) = 0 then
+			DBMS_OUTPUT.PUT_LINE(n);
+		end if;
+	end loop;
+END;
+/
